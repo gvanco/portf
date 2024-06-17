@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{%block title%}Log in{%endblock%}
+{% block content %}
+<a href="/"><img src="/static/images/arrow-left-circle.svg" class="mt-5" alt="" height="60rem"></a>
+<div class="container-md py-3 my-4 shadow rounded-4 bg-info-subtle ">
+    <form method="post" enctype="multipart/form-data">
+        <div class="h3 pb-1 mb-2 text-success border-bottom border-success"
+            style="font-family:'Arial' ; font-size: 40px;">
+            {%if not suc%}
+            <div class="alert alert-danger">
+                Wrong Password or Username
+            </div>
+            {%endif%}
+        </div>
+        <div class="mb-4 pt-2">
+            {{form.hidden_tag()}}
+            <div class="h3 pb-1 mb-2 text-success border-bottom border-success"
+                style="font-family:'Arial' ; font-size: 40px;">
+                Welcome to Portf! Log in to Start your own Photography Portfoilio!</div>
+            <div class="mb-4 pt-2">
+                {{form.username(class="form-control border-success bg-success bg-opacity-25",
+                placeholder="username",style="font-family: 'Courier New'")}}
+            </div>
+            <div class="mb-4">
+                {{form.password(class="form-control border-success bg-success bg-opacity-25",
+                placeholder="password",style="font-family: 'Courier New'")}}
+            </div>
+            {{form.submit(class="btn btn-outline-success rounded-pill")}}
+    </form>
+</div>
+</div>
+{%endblock%}

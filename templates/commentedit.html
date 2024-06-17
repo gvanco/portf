@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{%block title%}Edit Comment{%endblock%}
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">
+    {{form.hidden_tag()}}
+    <div class="form-group">
+        <label for="comment">Write your comment:</label>
+        {{form.sub(class="form-control my-1", placeholder="Subtitle for your Comment")}}
+        {{form.text(class="form-control my-1",placeholder="Comment Text")}}
+    </div>
+    {{form.submit(class="btn btn-primary mt-1")}}
+</form>
+
+{%endblock%}

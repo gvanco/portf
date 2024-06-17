@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{%block title%}Home{%endblock%}
+{%block style%}
+<style>
+    a:hover {
+        cursor: pointer;
+
+    }
+
+    a {
+        font-style: none;
+    }
+</style>
+{%endblock%}
+{% block content %}
+
+<nav class="navbar bg-body-tertiary mt-4 rounded-2 shadow">
+    {%if current_user.is_authenticated%}
+
+
+    <div class="container-fluid p-2">
+        <a class="text-decoration-none" href="/profile">
+            {%if admin%}
+            <img class="object-fit-contain" src="/static/images/admin-pfp.svg" alt="Logo" width="30" height="24"
+                class="d-inline-block align-text-top">
+            {%endif%}
+            {%if not admin%}
+            <img class="object-fit-contain" src="/static/images/user-pfp.svg" alt="Logo" width="30" height="24"
+                class="d-inline-block align-text-top">
+            {%endif%}
+            {{current_user.name}}
+        </a>
+    </div>
+
+
+    {%else%}
+    <a class="text-decoration-none" href="/signup">
+
+        <div class="container-fluid ">
+
+            <p class="text-center h4 text-dark ">Sign Up to create Profile!</p>
+
+        </div>
+    </a>
+    {%endif%}
+</nav>
+
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 ">
+
+    {% for pic in pics%}
+    <div class="col">
+        <div class="card mx-auto p-1 m-3 shadow" style="width: 18rem;">
+            <a href="post/{{pic['id']}}"><img src="static/images/pics/{{pic['img']}}" class="card-img-top"
+                    alt="..."></a>
+            <div class="card-body">
+                <h5 class="card-title">{{pic['title']}}</h5>
+                <h6 class="card-text">@{{User.query.get(pic.user_id).username}}</h6>
+                {%if admin%}
+                <a href="/post/{{pic['id']}}/delete" class="btn btn-danger">Delete</a>
+                <!-- <a href="/post/edit/{{pic['id']}}" class="btn btn-info">Edit</a> -->
+                {%endif%}
+
+
+                <form method="post" enctype="multipart/form-data" class="d-flex align-items-center">
+                    {{ lform.hidden_tag() }}
+                    <input name="post_id" class="d-none" value="{{pic['id']}}">
+                    {% if pic in liked_posts %}
+                    <button name="like" type="submit" class="btn btn-outline-dark me-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-heart" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 14.333l-.653-.622C3.053 10.47 0 7.198 0 4.527 0 2.42 1.895 1 4 1c1.566 0 2.874.697 3.75 2.112C8.126 1.697 9.434 1 11 1c2.105 0 4 1.42 4 3.527 0 2.671-3.053 5.943-7.347 9.184L8 14.333z" />
+                        </svg>
+                    </button>
+                    {% else %}
+                    <button name="like" type="submit" class="btn btn-outline-danger me-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-heart" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 14.333l-.653-.622C3.053 10.47 0 7.198 0 4.527 0 2.42 1.895 1 4 1c1.566 0 2.874.697 3.75 2.112C8.126 1.697 9.434 1 11 1c2.105 0 4 1.42 4 3.527 0 2.671-3.053 5.943-7.347 9.184L8 14.333z" />
+                        </svg>
+                    </button>
+                    {% endif %}
+                    <div class="ms-auto d-flex align-items-center m-5">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-heart" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 14.333l-.653-.622C3.053 10.47 0 7.198 0 4.527 0 2.42 1.895 1 4 1c1.566 0 2.874.697 3.75 2.112C8.126 1.697 9.434 1 11 1c2.105 0 4 1.42 4 3.527 0 2.671-3.053 5.943-7.347 9.184L8 14.333z" />
+                        </svg>
+                        <span class="like-count ms-1">{{pic['like_count']}}</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {%endfor%}
+
+
+
+
+</div>
+</div>
+</div>
+
+</script>
+{%endblock%}

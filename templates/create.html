@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{%block title%}Create{%endblock%}
+{% block content %}
+<a href="/"><img src="/static/images/arrow-left-circle.svg" class="mt-5" alt="" height="60rem"></a>
+<div class="container-lg bg-secondary-subtle rounded-4 mt-2 px-3 py-2 shadow-lg">
+    <nav class="navbar bg-body-tertiary bg-dark-subtle rounded-3 my-3 shadow">
+        <div class="container-fluid">
+            <span class="navbar-brand">Fill your new Post</span>
+        </div>
+    </nav>
+    <form method="post" enctype="multipart/form-data">
+         {{form.hidden_tag()}}
+        <div class="input-group mb-3">
+
+            <span class="input-group-text" id="basic-addon1">Title</span>
+            {{form.title(class="form-control", placeholder="Your Title" )}}
+        </div>
+
+        <div class="mb-3">
+
+            <div class="input-group my-3">
+                {{form.post_pic(class="form-control", placeholder="upload files" )}}
+            </div>
+
+            <div class="input-group mt-3">
+                <span class="input-group-text">Your Comment</span>
+                {{form.comment(class="form-control", placeholder="Your Title" )}}
+            </div>
+            {{form.submit(class="btn border-2 text-dark btn-outline-light mt-3 rounded-pill")}}
+
+        </div>
+    </form>
+    {% endblock content %}

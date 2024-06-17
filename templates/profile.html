@@ -1,0 +1,43 @@
+{%extends "base.html"%}
+{%block title%}Your Profile{%endblock%}
+{%block style%}
+<style>
+    /* Custom CSS can be added here */
+    .profile-picture {
+        width: 200px;
+        /* Adjust size as needed */
+        height: 200px;
+        padding: 7px;
+        /* Adjust size as needed */
+        border: 6px black solid;
+        border-radius: 50%;
+        object-fit: cover;
+        /* Ensure the picture fills the container */
+    }
+</style>
+{%endblock%}
+{% block content %}
+
+<div class="container mt-5">
+    <a href="/"><img src="/static/images/arrow-left-circle.svg" class="mt-2" alt=""
+            height="60rem"></a>
+    <div class="col-md-4 offset-md-4 shadow">
+        <div class="card p-1 ">
+            <div class="text-center mb-3 pt-4">
+                {%if admin%}<img class="object-fit-contain profile-picture" src="/static/images/admin-pfp.svg" alt="Logo" width="30" height="24"
+                class="d-inline-block align-text-top">{%endif%}
+                {%if not admin%}
+                <img class="object-fit-contain profile-picture" src="/static/images/user-pfp.svg" alt="Logo" width="30" height="24"
+                    class="d-inline-block align-text-top">{%endif%}
+            </div>
+            <div class="card-body">
+                <h2 class="card-title text-center display-4">{{current_user.name}}</h2>
+                <h5 class="card-text text-center text-light-dark display-6">@{{current_user.username}}</h5>
+                <h3 class="card-title text-center display-6" style="font-family: monospace;">{{current_user.role}}</h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{%endblock%}

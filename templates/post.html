@@ -1,0 +1,106 @@
+{%extends "base.html"%}
+{%block title%}post - {{pic['title']}}{%endblock%}
+{%block style%} <style>
+    .like-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .like-count {
+        margin-left: 5px;
+    }
+</style>{%endblock%}
+{% block content %}
+
+<div>
+
+    <div class="container mt-5">
+        <a href="/" class="text-decoration-none">
+            <img src="/static/images/arrow-left-circle.svg" class="mb-4" alt="Back" height="60rem">
+        </a>
+        <div class="card mx-auto shadow-lg" style="max-width: 30rem;">
+            <img src="/static/images/pics/{{pic['img']}}" class="card-img-top img-fluid" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{pic['title']}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@{{user[pic.user_id-1].username}}</h6>
+                <p class="card-text">{{pic['comment']}}</p>
+                
+                {% if admin %}
+                    <div class="d-flex justify-content-between mb-3">
+                        <a href="/post/{{pic['id']}}/delete" class="btn btn-danger">Delete</a>
+                        <a href="/post/{{pic['id']}}/edit" class="btn btn-info">Edit</a>
+                    </div>
+                {% endif %}
+                
+                <form method="post" enctype="multipart/form-data" class="d-flex align-items-center">
+                    {{ lform.hidden_tag() }}
+                    {% if not like %}
+                        <button name="like" type="submit" class="btn btn-outline-danger me-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 14.333l-.653-.622C3.053 10.47 0 7.198 0 4.527 0 2.42 1.895 1 4 1c1.566 0 2.874.697 3.75 2.112C8.126 1.697 9.434 1 11 1c2.105 0 4 1.42 4 3.527 0 2.671-3.053 5.943-7.347 9.184L8 14.333z"/>
+                            </svg>
+                        </button>
+                    {% else %}
+                        <button name="like" type="submit" class="btn btn-outline-dark me-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8 14.333l-.653-.622C3.053 10.47 0 7.198 0 4.527 0 2.42 1.895 1 4 1c1.566 0 2.874.697 3.75 2.112C8.126 1.697 9.434 1 11 1c2.105 0 4 1.42 4 3.527 0 2.671-3.053 5.943-7.347 9.184L8 14.333z"/>
+                            </svg>
+                        </button>
+                    {% endif %}
+                    <div class="ms-auto d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 14.333l-.653-.622C3.053 10.47 0 7.198 0 4.527 0 2.42 1.895 1 4 1c1.566 0 2.874.697 3.75 2.112C8.126 1.697 9.434 1 11 1c2.105 0 4 1.42 4 3.527 0 2.671-3.053 5.943-7.347 9.184L8 14.333z"/>
+                        </svg>
+                        <span class="like-count ms-1">{{pic['like_count']}}</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <h2>Comments Section</h2>
+        <hr>
+
+        <!-- Comment Form -->
+        {% if current_user.is_authenticated %}
+            <form method="post" enctype="multipart/form-data" class="mb-4">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    <label for="comment" class="form-label">Write your comment:</label>
+                    {{ form.sub(class="form-control my-2", placeholder="Subtitle for your Comment") }}
+                    {{ form.text(class="form-control my-2", placeholder="Comment Text") }}
+                </div>
+                {{ form.submit(class="btn btn-primary") }}
+            </form>
+            <hr>
+        {% endif %}
+
+        <!-- Comments -->
+        {% for comment in comments %}
+            <div class="row mb-4 border rounded p-3">
+                <div class="col-md-10">
+                    <div class="media">
+                        <!-- <img src="https://via.placeholder.com/64" class="mr-3 rounded-circle" alt="..."> -->
+                        <div class="media-body">
+                            <h6 class="mt-2">@{{ user[comment.user_id-1].name }}</h6>
+                            <h5 class="mt-1">{{ comment.sub }}</h5>
+                            <p>{{ comment.text }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-start justify-content-end">
+                    {% if admin or comment.user_id == current_user.id %}
+                        <a href="/post/{{ pic['id'] }}/comment/delete/{{ comment.id }}" class="btn btn-danger me-2">
+                            Delete
+                        </a>
+                        <a href="/post/{{ pic['id'] }}/comment/edit/{{ comment.id }}" class="btn btn-primary">
+                            Edit
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+        {%endblock%}
